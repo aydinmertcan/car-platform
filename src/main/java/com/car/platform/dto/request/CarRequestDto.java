@@ -1,4 +1,4 @@
-package com.car.platform.dto;
+package com.car.platform.dto.request;
 
 public class CarRequestDto {
     /***
