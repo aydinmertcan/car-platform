@@ -9,6 +9,7 @@ import com.car.platform.entity.CarEntity;
 import com.car.platform.mapper.CarMapper;
 import com.car.platform.repository.ICarRepository;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilders;
@@ -73,11 +74,13 @@ public class CarService {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<List<CarResponseDto>> getAutocompleteResults(AutocompleteRequestDto requestDto) {
+    public ResponseEntity<List<CarResponseDto>> getAutocompleteResults(String query) {
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder();
-        searchQueryBuilder.withQuery(multiMatchQuery(requestDto.getQuery())
+        searchQueryBuilder.withQuery(multiMatchQuery(query)
                 .type(MultiMatchQueryBuilder.Type.BOOL_PREFIX)
-                .fields(Map.of("carBrand", 1F, "carBrand._2gram", 1F, "carBrand._3gram", 1F)).fuzziness("auto"));
+                .fields(Map.of("searchName", 1F,
+                        "searchName._2gram", 1F,
+                        "searchName._3gram", 1F)).fuzziness(Fuzziness.AUTO));
         SearchHits<CarEntity> cars = operations.search(searchQueryBuilder.build(), CarEntity.class);
         List<CarResponseDto> response = processResult(cars);
         return ResponseEntity.ok(response);

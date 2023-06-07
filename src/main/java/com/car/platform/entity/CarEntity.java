@@ -6,7 +6,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.core.suggest.Completion;
 
-@Document(indexName = "car")
+@Document(indexName = "car_autocomplete")
 public class CarEntity {
     @Id
     @Field(type = FieldType.Integer)

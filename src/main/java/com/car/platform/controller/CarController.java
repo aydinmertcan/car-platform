@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/car")
+@CrossOrigin
 public class CarController {
     private CarService carService;
 
@@ -34,8 +35,8 @@ public class CarController {
         return carService.getCarByBrand(requestDto);
     }
 
-    @PostMapping("/get-autocomplete-results")
-    public ResponseEntity<List<CarResponseDto>> getAutocompleteResults(@RequestBody AutocompleteRequestDto requestDto) {
-        return carService.getAutocompleteResults(requestDto);
+    @GetMapping("/get-autocomplete-results")
+    public ResponseEntity<List<CarResponseDto>> getAutocompleteResults(@RequestParam("q") String query) {
+        return carService.getAutocompleteResults(query);
     }
 }
